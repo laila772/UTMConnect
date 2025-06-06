@@ -52,22 +52,22 @@ Route::patch('/programs/{id}/toggle-registration', [ProgramController::class, 't
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// Dashboard routes (replace with your actual routes)
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+// // Dashboard routes (replace with your actual routes)
+// Route::get('/admin/dashboard', function () {
+//     return view('admin.dashboard');
+// })->name('admin.dashboard');
 
-Route::get('/student/dashboard', function () {
-    return view('student.dashboard');
-})->name('student.dashboard');
+// Route::get('/student/dashboard', function () {
+//     return view('student.dashboard');
+// })->name('student.dashboard');
 
 // Route::get('/latest', function () {
 //     return view('latest');
