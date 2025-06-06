@@ -40,6 +40,10 @@ Route::get('/latest-programs', [LatestController::class, 'index'])->name('latest
 
 Route::patch('/programs/{id}/toggle-registration', [ProgramController::class, 'toggleRegistration'])->name('programs.toggleRegistration');
 
+Route::get('/', function () {
+    return view('welcome'); // or 'home', 'index', etc.
+});
+
 
 /*
 |--------------------------------------------------------------------------
