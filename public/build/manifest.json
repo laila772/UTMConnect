@@ -1,0 +1,29 @@
+{
+  "public/fonts/bootstrap-icons.woff": {
+    "file": "assets/bootstrap-icons-B-QKbhqn.woff",
+    "src": "public/fonts/bootstrap-icons.woff"
+  },
+  "public/fonts/bootstrap-icons.woff2": {
+    "file": "assets/bootstrap-icons-tJ0_KeE2.woff2",
+    "src": "public/fonts/bootstrap-icons.woff2"
+  },
+  "public/images/anna-rosar-ZxFyVBHMK-c-unsplash.jpg": {
+    "file": "assets/anna-rosar-ZxFyVBHMK-c-unsplash-9_SvwrAT.jpg",
+    "src": "public/images/anna-rosar-ZxFyVBHMK-c-unsplash.jpg"
+  },
+  "public/images/frederik-rosar-NDSZcCfnsbY-unsplash.jpg": {
+    "file": "assets/frederik-rosar-NDSZcCfnsbY-unsplash-Cb2D7FEV.jpg",
+    "src": "public/images/frederik-rosar-NDSZcCfnsbY-unsplash.jpg"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-iwT0HVq6.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-T1DpEqax.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
