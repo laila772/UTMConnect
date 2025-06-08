@@ -15,8 +15,6 @@
     <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/templatemo-tiya-golf-club.css') }}">
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-
 </head>
 <body>
     {{-- <header>
