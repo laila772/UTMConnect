@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@vite(['resources/css/app.css', 'resources/js/app.js'])
 
 <!-- <head>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
