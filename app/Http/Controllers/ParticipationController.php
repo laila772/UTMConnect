@@ -51,7 +51,7 @@ class ParticipationController extends Controller
             })
             ->get();
 
-        return view('admin.participants', compact('participants', 'search'));
+        return view('admin.participants', compact('participants', ['search' => '']));
     }
 
     // Admin: Update participation status

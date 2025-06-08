@@ -27,7 +27,7 @@
 
     <form method="GET" class="mb-3">
         <div class="input-group">
-            <input type="text" name="search" value="{{ $search }}" class="form-control" placeholder="Search by name or program title">
+            <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control" placeholder="Search by name or program title">
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
