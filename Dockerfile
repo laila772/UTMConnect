@@ -33,7 +33,8 @@ COPY . .
 RUN composer install --optimize-autoloader --no-dev
 
 # Install Node dependencies and build Vite assets
-RUN npm install && npm run build
+RUN npm install && npm run build \
+ && ls -R public/build
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www \
