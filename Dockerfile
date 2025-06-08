@@ -1,24 +1,26 @@
-# Use the official PHP image with FPM
+# Start from the official PHP image with FPM
 FROM php:8.1-fpm
 
-# Install system dependencies
+# Install system dependencies and Node.js
 RUN apt-get update && apt-get install -y \
     build-essential \
+    curl \
+    git \
+    unzip \
+    zip \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
-    zip \
-    unzip \
-    curl \
-    git \
-    nano \
     libzip-dev \
     libpq-dev \
-    nodejs \
-    npm \
+    nano \
     && docker-php-ext-install pdo pdo_mysql zip
+
+# Install Node.js (v18)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -33,20 +35,17 @@ COPY . .
 RUN composer install --optimize-autoloader --no-dev
 
 # Install Node dependencies and build Vite assets
-RUN npm install && npm run build 
+RUN npm install && npm run build
 
-# Set permissions for Laravel
+# Set permissions (Laravel specific)
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-# Copy .env file if needed (optional, for Docker builds)
-# COPY .env.production .env
+# Generate Laravel key (only works if .env exists)
+RUN php artisan key:generate || echo "Key generate failed – check .env file."
 
-# Generate Laravel app key
-RUN php artisan config:clear && php artisan key:generate
-
-# Expose port
+# Expose Laravel's port
 EXPOSE 8000
 
-# Start Laravel application
+# Start Laravel development server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
