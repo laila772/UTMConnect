@@ -32,17 +32,21 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Install Node dependencies and build assets (for Laravel Mix or Vite)
+# Install Node dependencies and build Vite assets
 RUN npm install && npm run build
 
-# Set correct permissions
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
+# Set permissions for Laravel
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-# Laravel key generate (ensure .env is configured!)
-RUN php artisan key:generate
+# Copy .env file if needed (optional, for Docker builds)
+# COPY .env.production .env
 
-# Expose the port Laravel will serve on
+# Generate Laravel app key
+RUN php artisan config:clear && php artisan key:generate
+
+# Expose port
 EXPOSE 8000
 
-# Start the Laravel server
+# Start Laravel application
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
