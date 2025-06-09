@@ -1,6 +1,9 @@
-# PHP (Laravel) container
-FROM php:8.1-fpm AS php
+# -----------------------------
+# PHP + Composer + Laravel
+# -----------------------------
+FROM php:8.1-fpm
 
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -15,6 +18,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libpq-dev \
+    nginx \
+    supervisor \
     && docker-php-ext-install pdo pdo_mysql zip
 
 # Install Composer
@@ -23,25 +28,23 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
+# Copy app files
 COPY . .
 
+# Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
-RUN php artisan config:cache
-RUN php artisan route:cache
 
-# NGINX container
-FROM nginx:stable-alpine AS nginx
+# Laravel optimizations
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
-COPY --from=php /var/www /var/www
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+# Set file permissions
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www
 
-# Permissions
-RUN adduser -D -g 'www' www && \
-    chown -R www:www /var/www
+# Expose port for Laravel dev server or Nginx
+EXPOSE 8000
 
-# Entrypoint to run both PHP-FPM and Nginx
-COPY --from=php /usr/local/etc/php-fpm.d/ /usr/local/etc/php-fpm.d/
-COPY --from=php /usr/local/bin/php /usr/local/bin/php
-COPY --from=php /usr/local/sbin/php-fpm /usr/local/sbin/php-fpm
-
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+# Start Laravel using PHP’s built-in server
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
