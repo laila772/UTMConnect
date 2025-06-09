@@ -1,26 +1,25 @@
 # -----------------------------
-# PHP + Composer + Laravel
+# PHP + Composer + Laravel + Nginx (Production Setup)
 # -----------------------------
 FROM php:8.1-fpm
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
+    nginx \
+    supervisor \
+    unzip \
+    git \
+    curl \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libzip-dev \
-    unzip \
-    zip \
-    curl \
-    git \
-    nano \
     libonig-dev \
     libxml2-dev \
-    libpq-dev \
-    nginx \
-    supervisor \
-    && docker-php-ext-install pdo pdo_mysql zip
+    libzip-dev \
+    zip \
+    nano \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql zip gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -28,7 +27,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy app files
+# Copy project files
 COPY . .
 
 # Install PHP dependencies
@@ -39,12 +38,16 @@ RUN php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
 
-# Set file permissions
+# Set permissions
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www
 
-# Expose port for Laravel dev server or Nginx
-EXPOSE 8000
+# Copy Nginx and Supervisor configuration
+COPY deploy/nginx.conf /etc/nginx/sites-available/default
+COPY deploy/supervisord.conf /etc/supervisord.conf
 
-# Start Laravel using PHP’s built-in server
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+# Expose HTTP port
+EXPOSE 80
+
+# Run Supervisor to manage Nginx + PHP-FPM
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
