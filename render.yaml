@@ -24,7 +24,7 @@ services:
       - key: DB_PORT
         value: 3306
       - key: DB_DATABASE
-        value: utmconnect
+        value: utmconnect+
       - key: DB_USERNAME
         value: root
       - key: DB_PASSWORD
