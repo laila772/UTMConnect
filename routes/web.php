@@ -69,6 +69,11 @@ Route::get('/student/dashboard', function () {
     return view('student.dashboard');
 })->name('student.dashboard');
 
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
+
+
 // Route::get('/latest', function () {
 //     return view('latest');
 // })->name('latest');
