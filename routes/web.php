@@ -69,9 +69,7 @@ Route::get('/student/dashboard', function () {
     return view('student.dashboard');
 })->name('student.dashboard');
 
-Route::get('/health', function () {
-    return response()->json(['status' => 'ok']);
-});
+Route::get('/health', fn() => response('ok', 200));
 
 
 // Route::get('/latest', function () {
