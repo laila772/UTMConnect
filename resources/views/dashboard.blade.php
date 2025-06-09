@@ -3,7 +3,7 @@
 @section('content')
 
 <head>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head> 
 
 <main>
