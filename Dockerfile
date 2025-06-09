@@ -1,26 +1,21 @@
-# Start from the official PHP image with FPM
-FROM php:8.1-fpm
+# PHP (Laravel) container
+FROM php:8.1-fpm AS php
 
-# Install system dependencies and Node.js
 RUN apt-get update && apt-get install -y \
     build-essential \
-    curl \
-    git \
-    unzip \
-    zip \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libzip-dev \
+    unzip \
+    zip \
+    curl \
+    git \
+    nano \
     libonig-dev \
     libxml2-dev \
-    libzip-dev \
     libpq-dev \
-    nano \
     && docker-php-ext-install pdo pdo_mysql zip
-
-# Install Node.js (v18)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -28,24 +23,25 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy project files
 COPY . .
 
-# Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
+RUN php artisan config:cache
+RUN php artisan route:cache
 
-# Install Node dependencies and build Vite assets
-RUN npm install && npm run build
+# NGINX container
+FROM nginx:stable-alpine AS nginx
 
-# Set permissions (Laravel specific)
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
+COPY --from=php /var/www /var/www
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Generate Laravel key (only works if .env exists)
-RUN php artisan key:generate || echo "Key generate failed – check .env file."
+# Permissions
+RUN adduser -D -g 'www' www && \
+    chown -R www:www /var/www
 
-# Expose Laravel's port
-EXPOSE 8000
+# Entrypoint to run both PHP-FPM and Nginx
+COPY --from=php /usr/local/etc/php-fpm.d/ /usr/local/etc/php-fpm.d/
+COPY --from=php /usr/local/bin/php /usr/local/bin/php
+COPY --from=php /usr/local/sbin/php-fpm /usr/local/sbin/php-fpm
 
-# Start Laravel development server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
