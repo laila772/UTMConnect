@@ -6,7 +6,7 @@ services:
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: utmconnect+
+      MYSQL_DATABASE: utmconnect
       MYSQL_USER: user
       MYSQL_PASSWORD: userpass
     ports:
