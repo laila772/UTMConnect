@@ -2,9 +2,9 @@
 
 @section('content')
 
-<!-- <head>
+<head>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-</head> -->
+</head> 
 
 <main>
 
