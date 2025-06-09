@@ -20,12 +20,12 @@ services:
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        value: mysql.railway.internal
+        value: mysql
       - key: DB_PORT
         value: 3306
       - key: DB_DATABASE
-        value: railway
+        value: utmconnect+
       - key: DB_USERNAME
-        value: root
+        value: user
       - key: DB_PASSWORD
-        value: LptYOizKggQEUkHlWYzhsLLUgehSrNXx
+        value: userpass
