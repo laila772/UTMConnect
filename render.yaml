@@ -16,7 +16,7 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://utmconnect-production-30be.up.railway.app/
+        value: 
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST

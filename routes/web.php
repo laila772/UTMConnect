@@ -71,7 +71,6 @@ Route::get('/student/dashboard', function () {
 
 Route::get('/health', fn() => response('ok', 200));
 
-
 // Route::get('/latest', function () {
 //     return view('latest');
 // })->name('latest');
