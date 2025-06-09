@@ -46,5 +46,7 @@ RUN chown -R www-data:www-data /var/www \
 # Expose port for Laravel dev server or Nginx
 EXPOSE 8000
 
+RUN php artisan migrate --force
+
 # Start Laravel using PHP’s built-in server
 CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
