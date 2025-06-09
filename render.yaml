@@ -20,7 +20,7 @@ services:
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        value: mysql.railway.internal
+        value: mysql://root:LptYOizKggQEUkHlWYzhsLLUgehSrNXx@mysql.railway.internal:3306/railway
       - key: DB_PORT
         value: 3306
       - key: DB_DATABASE
