@@ -15,7 +15,7 @@
     <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/templatemo-tiya-golf-club.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-
+    <link rel="stylesheet" href="https://utmconnect.onrender.com/css/dashboard.css">
 
 </head>
 <body>
