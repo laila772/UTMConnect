@@ -38,9 +38,9 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www
 
 # Nginx & Supervisor config
-COPY deploy/nginx.conf /etc/nginx/sites-available/default
+COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
